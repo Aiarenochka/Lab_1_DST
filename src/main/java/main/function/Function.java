@@ -1,10 +1,7 @@
 package main.function;
 
-import java.util.function.DoubleUnaryOperator;
-
-public class Function implements DoubleUnaryOperator {
-    @Override
-    public double applyAsDouble(double x) {
-        return Math.sin(2 * x) * Math.cos(3 * x);
+public class Function {
+    public double calculate(double t) {
+        return Math.sin(2 * t) * Math.cos(3 * t);
     }
 }

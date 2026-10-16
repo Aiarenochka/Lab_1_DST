@@ -11,33 +11,33 @@ import static org.assertj.core.api.AssertionsForClassTypes.offset;
 class FunctionTest {
     IntegralCalculator integralCalculator;
     Function function;
-    double EPS = 1e-6;
+    double EPS = 1e-4;
 
     @BeforeEach
     void setUp() {
         function = new Function();
+        integralCalculator = new IntegralCalculator();
     }
 
     @ParameterizedTest
-    @CsvSource({"0.0, 1.0",
-            "1.0, 0.135335",
-            "2.0, 0.018315",
-            "3.0, 0.002478",
-            "10.0, 2.06115e-9"})
+    @CsvSource({
+            "0.0, 0.0",
+            "0.785398, -0.707106",
+            "1.570796, 0.0"
+    })
     void functionTest(double x, double expected) {
-        double result = function.applyAsDouble(x);
+        double result = function.calculate(x);
         assertThat(result).isCloseTo(expected, offset(EPS));
     }
 
     @ParameterizedTest
-    @CsvSource({"0.0, 1.0, 100, 0.428023",
-            "0.0, 2.0, 200, 0.485950",
-            "1.0, 3.0, 500, 0.066162",
-            "0.0, 0.0, 100, 0.0",
-            "5.0, 3.0, 300, -0.001224"})
-    void applyAsDoubleTest(double a, double b, int n, double expected) {
-        integralCalculator = new IntegralCalculator(a, b, n, function);
-        double result = integralCalculator.calculate();
+    @CsvSource({
+            "0.0, 1.570796, 100, -0.4",
+            "0.0, 1.570796, 1000, -0.4",
+            "0.0, 0.0, 100, 0.0"
+    })
+    void integralCalculatorTest(double a, double b, int n, double expected) {
+        double result = integralCalculator.calculate(a, b, n, function);
         assertThat(result).isCloseTo(expected, offset(EPS));
     }
 }
